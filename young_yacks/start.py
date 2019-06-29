@@ -1,6 +1,6 @@
 import arcade
 
-from window import GameWindow
+from game.window import GameWindow
 
 
 def start_window():
