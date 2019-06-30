@@ -1,38 +1,73 @@
-from cowbreed import CowBreed
-from earth_system import EarthSystem
-from typing import List
+from typing import List, Dict
+from dataclasses import dataclass, field
+from . import rules
+
+@dataclass
+class EarthMetric:
+    name: str
+    unit: str
+    min: float = field(repr=False)
+    max: float = field(repr=False)
+    current_value: float
+
+    @property
+    def damage_perc(self) -> float:
+        return rules.get_system_damage_perc(system=self)
 
 
+@dataclass
+class CowBreed:
+    name: str
+    damage_rates: Dict[EarthMetric, int] = field(repr=False)
+    value: float
+    cost: float
+    total_cows: int = field(default=0)
+
+
+@dataclass
 class Player:
-    money: float
-    cow_types: List[CowBreed]
-    systems: List[EarthSystem]
-    win_threshold: int
-    lose_threshold: int  # must be higher than win_threshold
 
-    @staticmethod
-    def get_income(cow_breeds: List[CowBreed], dt: float) -> float:
-        pass
+    systems: List[EarthMetric] = field(repr=False)
+    win_threshold: int = field(repr=False)
+    lose_threshold: int = field(repr=False)  # must be higher than win_threshold
+    money: float = field(default=0)
+    cows: List[CowBreed] = field(default_factory=list)
 
-    @staticmethod
-    def get_environment_damage_rate(
-            cow_breeds: List[CowBreed], systems: List[EarthSystem], dt: float) -> List[EarthSystem]:
-        pass
+    @property
+    def income(self):
+        """The player's income rate."""
+        return rules.get_income(cow_breeds=self.cows)
 
-    @staticmethod
-    def get_doomed_perc(systems: List[EarthSystem]) -> int:
-        pass
+    @property
+    def damages(self) -> Dict[EarthMetric, float]:
+        """The rate of damage on each systems, when all cows are taken into account."""
+        return rules.get_environment_damage(cow_breeds=self.cows, systems=self.systems)
 
-    @staticmethod
-    def has_won(doom_perc: int, win_thereshold: int, game_time: float, ) -> bool:
-        pass
-
-    @staticmethod
-    def has_lost(max_doom_perc: int, lose_threshold: int) -> bool:
-        pass
+    @property
+    def earth_damage_perc(self) -> float:
+        """The earth's overall damage level, between 0 (unharmed) and 1 (harmed)."""
+        return rules.get_earth_damage_perc(systems=self.systems)
 
 
-# class Game:
-#    player: Player
-#    game_time: float
-#    cow_breeds: List[CowBreed]
+class Game:
+    player: Player
+    game_time: float
+    cow_breeds: List[CowBreed]
+
+    @property
+    def was_won(self) -> bool:
+        return rules.player_scared_aliens(
+            doom_perc=self.player.earth_damage_perc,
+            win_threshold=self.player.win_threshold,
+            lose_threshold=self.player.lose_threshold,
+            game_time=self.game_time
+        )
+
+    @property
+    def was_lost(self):
+        lost1 = rules.player_destroyed_earth(
+            doom_perc=self.player.earth_damage_perc,
+            lose_threshold=self.player.lose_threshold,
+        )
+        out_of_time = self.game_time < 0.
+        return lost1 or out_of_time
