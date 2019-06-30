@@ -10,7 +10,7 @@ def get_income(cow_breeds: List[CowBreed]) -> float:
 
 def get_system_damage_perc(system: EarthMetric) -> float:
     """Returns the value's percentage between the min and max values"""
-    return (system.current_value - system.min) / (system.max - system.min)
+    return (system.level - system.min) / (system.max - system.min)
 
 def get_earth_damage_perc(systems: List[EarthMetric]) -> float:
     """Returns the earth's overall damage level, given the damage percentage of each individual system."""

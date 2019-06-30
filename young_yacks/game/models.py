@@ -2,33 +2,33 @@ from typing import List, Dict
 from dataclasses import dataclass, field
 from . import rules
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class EarthMetric:
+    level: float = field(hash=False)
     name: str
     unit: str
     min: float = field(repr=False)
     max: float = field(repr=False)
-    current_value: float
 
     @property
     def damage_perc(self) -> float:
         return rules.get_system_damage_perc(system=self)
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class CowBreed:
     name: str
-    damage_rates: Dict[EarthMetric, int] = field(repr=False)
+    damage_rates: Dict[EarthMetric, int] = field(repr=False, hash=False)
     value: float
     cost: float
-    total_cows: int = field(default=0)
+    total_cows: int = field(default=0, hash=False)
 
 
 @dataclass
 class Player:
     systems: List[EarthMetric] = field(repr=False)
-    win_threshold: int = field(repr=False)
-    lose_threshold: int = field(repr=False)  # must be higher than win_threshold
+    win_threshold: float = field(repr=False)
+    lose_threshold: float = field(repr=False)  # must be higher than win_threshold
     money: float = field(default=0)
     cows: List[CowBreed] = field(default_factory=list)
 
@@ -48,6 +48,7 @@ class Player:
         return rules.get_earth_damage_perc(systems=self.systems)
 
 
+@dataclass
 class Game:
     player: Player
     game_time: float
