@@ -26,6 +26,7 @@ class CowBreed:
 
 @dataclass
 class Player:
+
     systems: List[EarthMetric] = field(repr=False)
     win_threshold: int = field(repr=False)
     lose_threshold: int = field(repr=False)  # must be higher than win_threshold
@@ -70,4 +71,3 @@ class Game:
         )
         out_of_time = self.game_time < 0.
         return lost1 or out_of_time
-
