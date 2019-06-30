@@ -12,14 +12,13 @@ class EarthMetric:
 
     @property
     def damage_perc(self) -> float:
-        """Returns the value's percentage between the min and max values"""
-        return (self.current_value - self.min) / (self.max - self.min)
+        return rules.get_system_damage_perc(system=self)
 
 
 @dataclass
 class CowBreed:
     name: str
-    damage_rates: Dict[EarthMetric: int] = field(repr=False)
+    damage_rates: Dict[EarthMetric, int] = field(repr=False)
     value: float
     cost: float
     total_cows: int = field(default=0)
@@ -39,7 +38,7 @@ class Player:
         return rules.get_income(cow_breeds=self.cows)
 
     @property
-    def damages(self) -> Dict[EarthMetric: float]:
+    def damages(self) -> Dict[EarthMetric, float]:
         """The rate of damage on each systems, when all cows are taken into account."""
         return rules.get_environment_damage(cow_breeds=self.cows, systems=self.systems)
 
@@ -48,16 +47,27 @@ class Player:
         """The earth's overall damage level, between 0 (unharmed) and 1 (harmed)."""
         return rules.get_earth_damage_perc(systems=self.systems)
 
-    @staticmethod
-    def has_won(doom_perc: int, win_threshold: int, game_time: float) -> bool:
-        pass
-
-    @staticmethod
-    def has_lost(max_doom_perc: int, lose_threshold: int) -> bool:
-        pass
-
 
 class Game:
     player: Player
     game_time: float
     cow_breeds: List[CowBreed]
+
+    @property
+    def was_won(self) -> bool:
+        return rules.player_scared_aliens(
+            doom_perc=self.player.earth_damage_perc,
+            win_threshold=self.player.win_threshold,
+            lose_threshold=self.player.lose_threshold,
+            game_time=self.game_time
+        )
+
+    @property
+    def was_lost(self):
+        lost1 = rules.player_destroyed_earth(
+            doom_perc=self.player.earth_damage_perc,
+            lose_threshold=self.player.lose_threshold,
+        )
+        out_of_time = self.game_time < 0.
+        return lost1 or out_of_time
+
