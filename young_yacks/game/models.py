@@ -1,6 +1,6 @@
 from typing import List, Dict
 from dataclasses import dataclass, field
-from . import rules
+
 
 @dataclass(unsafe_hash=True)
 class EarthMetric:
@@ -46,7 +46,7 @@ class Player:
 
     @property
     def earth_damage_perc(self) -> float:
-        """The earth's overall damage level, between 0 (unharmed) and 1 (harmed), based on contributions from each system."""
+        """The earth's overall damage, between 0 (unharmed) and 1 (harmed), based on contributions from each system."""
         damage = sum(system.level_perc for system in self.systems) / len(self.systems)
         assert 0 <= damage <= 1
         return damage
@@ -67,4 +67,3 @@ class Game:
     @property
     def was_lost(self):
         return self.player.earth_damage_perc > self.lose_threshold or (self.game_time < 0. and not self.was_won)
-
