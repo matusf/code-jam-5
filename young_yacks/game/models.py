@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import List, Dict
 from dataclasses import dataclass, field
 from .mixins import Queryable
 
@@ -28,10 +28,12 @@ class CowBreed(Queryable):
 
 @dataclass
 class Game:
-    money: float = field(default=0)
     game_time: float
     win_threshold: float
     lose_threshold: float  # must be higher than win_threshold
+    money: float = field(default=0)
+    cows: List[CowBreed] = field(default_factory=CowBreed.all, repr=False)
+    environment: List[Environment] = field(default_factory=Environment.all, repr=False)
 
     @property
     def income(self):
