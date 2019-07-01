@@ -1,5 +1,15 @@
 import arcade
 from .textbutton import TextButton
+from collections import UserList
+
+
+class DrawList(UserList):
+    """ A custom list tweaked to work with objects
+    that implement the draw method."""
+    def draw(self):
+        """ Draw all the items."""
+        for item in self.data:
+            item.draw()
 
 
 class GameWindow(arcade.Window):
@@ -12,19 +22,16 @@ class GameWindow(arcade.Window):
         super().__init__(width, height, title, fullscreen, resizable)
 
         arcade.set_background_color(arcade.color.AMAZON)
-
-        self.textbutton = None
+        self.draw_list = None
+        self.start_draw_list = DrawList([
+            TextButton(x=self.width/2, y=self.height/2, width=300, height=300,
+                       text="Clicks ;)", font_size=12.0, color=(150, 150, 150),
+                       text_color=(0, 0, 0), filled=True)])
 
     def setup(self):
         """ Set up the game and initialize the variables.
         NOTE: This is ran here so we could restart the game."""
-        self.start_menu()
-
-    def start_menu(self):
-        """ Will set up the window like the start menu """
-        self.textbutton = TextButton(x=self.width/2, y=self.height/2, width=300, height=300,
-                                     text="Clicks ;)", font_size=12.0, color=(150, 150, 150),
-                                     text_color=(0, 0, 0), filled=True)
+        self.draw_list = self.start_draw_list
 
     # Events
 
@@ -33,7 +40,7 @@ class GameWindow(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
-        self.textbutton.draw()
+        self.draw_list.draw()
 
     def update(self, delta_time):
         """
@@ -68,7 +75,7 @@ class GameWindow(arcade.Window):
         """
         Called when the user presses a mouse button.
         """
-        print(self.textbutton.is_inside(x, y))
+        print(self.draw_list[0].is_inside(x, y))
 
     def on_mouse_release(self, x, y, button, key_modifiers):
         """
