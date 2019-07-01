@@ -1,37 +1,47 @@
 import arcade
 
 
+def _has_been_clicked(x, y, sprite):
+    """ Returns a True if the coordinates are inside the sprite."""
+    return sprite.left < x < sprite.right and sprite.bottom < y < sprite.top
+
+
 class GameWindow(arcade.Window):
     """
-    Main application class.
-
-    NOTE: Go ahead and delete the methods you don't need.
-    If you do need a method, delete the 'pass' and replace it
-    with your own code. Don't leave 'pass' in this program.
+    Main window for GAME
     """
 
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+    def __init__(self, width, height, title, fullscreen, resizable):
+        """ Main window's initializer"""
+        super().__init__(width, height, title, fullscreen, resizable)
 
         arcade.set_background_color(arcade.color.AMAZON)
-
-        # If you have sprite lists, you should create them here,
-        # and set them to None
+        
+        self.start_buttons = None
 
     def setup(self):
-        # Create your sprites and sprite lists here
-        pass
+        """ Set up the game and initialize the variables.
+        NOTE: This is ran here so we could restart the game."""
+        self.start_menu()
+
+    def start_menu(self):
+        """ Will set up the window like the start menu """
+        self.start_buttons = arcade.SpriteList()
+
+        # I named the image cow.png but it is just a black box.
+        self.start_button = arcade.Sprite("cow.png", 1)
+        self.start_button.center_x, self.start_button.center_y = self.width/2, self.height/2
+        self.start_buttons.append(self.start_button)
+
+    # Events
 
     def on_draw(self):
         """
         Render the screen.
         """
-
-        # This command should happen before we start drawing. It will clear
-        # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()
 
-        # Call draw() on all your sprite lists below
+        self.start_buttons.draw()
 
     def update(self, delta_time):
         """
@@ -66,7 +76,7 @@ class GameWindow(arcade.Window):
         """
         Called when the user presses a mouse button.
         """
-        pass
+        print(_has_been_clicked(x, y, self.start_buttons[0]))
 
     def on_mouse_release(self, x, y, button, key_modifiers):
         """
