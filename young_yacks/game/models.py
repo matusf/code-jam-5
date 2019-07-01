@@ -1,73 +1,79 @@
 from typing import List, Dict
 from dataclasses import dataclass, field
-from . import rules
+from .mixins import Queryable
 
-@dataclass
-class EarthMetric:
+
+@dataclass(unsafe_hash=True)
+class Environment(Queryable):
     name: str
+    level: float = field(hash=False)
     unit: str
     min: float = field(repr=False)
     max: float = field(repr=False)
-    current_value: float
 
     @property
-    def damage_perc(self) -> float:
-        return rules.get_system_damage_perc(system=self)
+    def level_perc(self) -> float:
+        """Returns the level's percentage between the min and max values"""
+        return (self.level - self.min) / (self.max - self.min)
 
 
-@dataclass
-class CowBreed:
+@dataclass(unsafe_hash=True)
+class CowBreed(Queryable):
     name: str
-    damage_rates: Dict[EarthMetric, int] = field(repr=False)
+    damage_rates: Dict[Environment, int] = field(repr=False, hash=False)
     value: float
     cost: float
-    total_cows: int = field(default=0)
+    total_cows: int = field(default=0, hash=False)
 
 
 @dataclass
-class Player:
-
-    systems: List[EarthMetric] = field(repr=False)
-    win_threshold: int = field(repr=False)
-    lose_threshold: int = field(repr=False)  # must be higher than win_threshold
+class Game:
+    game_time: float
+    win_threshold: float
+    lose_threshold: float  # must be higher than win_threshold
     money: float = field(default=0)
-    cows: List[CowBreed] = field(default_factory=list)
+    cows: List[CowBreed] = field(default_factory=CowBreed.all, repr=False)
+    environment: List[Environment] = field(default_factory=Environment.all, repr=False)
+
+    @classmethod
+    def init_game(cls):
+        """Instantiates all game models and returns a new Game."""
+
+        # All instances of the Queryable classes can be gotten at the Class.all() method or Game instance attributes.
+        water_level = Environment(name='Water Level', unit='m', min=20, max=22, level=20.5)
+        temperature = Environment(name='Air Temperature', unit='°C', min=10, max=40, level=15)
+
+        CowBreed(name="Meat Cows", damage_rates={water_level: 10, temperature: 15}, value=20, cost=100)
+        CowBreed(name="Milk Cows", damage_rates={water_level: 20, temperature: 5}, value=30, cost=150)
+        CowBreed(name="Burp Cows", damage_rates={water_level: 5, temperature: 50}, value=40, cost=30)
+
+        cls = cls(game_time=120, win_threshold=0.7, lose_threshold=0.9)
+        return cls
 
     @property
     def income(self):
         """The player's income rate."""
-        return rules.get_income(cow_breeds=self.cows)
+        return sum(breed.value * breed.total_cows for breed in CowBreed.all())
 
     @property
-    def damages(self) -> Dict[EarthMetric, float]:
-        """The rate of damage on each systems, when all cows are taken into account."""
-        return rules.get_environment_damage(cow_breeds=self.cows, systems=self.systems)
+    def damages(self) -> Dict[Environment, float]:
+        """The rate of damage on each system, when all cows are taken into account."""
+        damage = {}
+        for system in Environment.all():
+            damage[system.name] = sum(breed.damage_rates[system] for breed in CowBreed.all())
+        return damage
 
     @property
     def earth_damage_perc(self) -> float:
-        """The earth's overall damage level, between 0 (unharmed) and 1 (harmed)."""
-        return rules.get_earth_damage_perc(systems=self.systems)
-
-
-class Game:
-    player: Player
-    game_time: float
-    cow_breeds: List[CowBreed]
+        """The earth's overall damage, between 0 (unharmed) and 1 (harmed), based on contributions from each system."""
+        damage = sum(system.level_perc for system in Environment.all()) / len(Environment.all())
+        assert 0 <= damage <= 1
+        return damage
 
     @property
     def was_won(self) -> bool:
-        return rules.player_scared_aliens(
-            doom_perc=self.player.earth_damage_perc,
-            win_threshold=self.player.win_threshold,
-            lose_threshold=self.player.lose_threshold,
-            game_time=self.game_time
-        )
+        return self.game_time <= 0 and self.win_threshold < self.earth_damage_perc < self.lose_threshold
 
     @property
     def was_lost(self):
-        lost1 = rules.player_destroyed_earth(
-            doom_perc=self.player.earth_damage_perc,
-            lose_threshold=self.player.lose_threshold,
-        )
-        out_of_time = self.game_time < 0.
-        return lost1 or out_of_time
+        return self.earth_damage_perc > self.lose_threshold or (self.game_time < 0. and not self.was_won)
