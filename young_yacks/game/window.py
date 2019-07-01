@@ -42,6 +42,7 @@ class GameWindow(arcade.Window):
         arcade.start_render()
 
         self.start_buttons.draw()
+        arcade.draw_text("Click Me!", self.start_buttons[0].left, self.start_buttons[0].bottom, arcade.color.WHITE, 31)
 
     def update(self, delta_time):
         """
