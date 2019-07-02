@@ -4,7 +4,7 @@ from game.window import GameWindow
 
 
 def start_window():
-    game = GameWindow(800, 600, "Our Game!", False, True)
+    game = GameWindow(320, 180, "Our Game!", True, False)
     game.setup()
 
     # Will keep the program running, until the user closes the window
