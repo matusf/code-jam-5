@@ -2,9 +2,9 @@ OUR GAME
 ========
 
 | You're a cow farmer just relaxing and reading the newspaper when you see an interesting article.
-| "NASA *thinks* aliens will invade **earth**\!", you put down your newspaper.
-| What about your cows?!? You get an ingenious idea! **Who would wanna come to a dead planet?**
-| *And so, your journey begins*. Your journey as a cow farmer killing earth.
+| "NASA thinks aliens will invade earth!", you put down your newspaper.
+| What about your cows?!? You get an ingenious idea! Who would wanna come to a dead planet?
+| And so, your journey begins. Your journey as a cow farmer killing earth.
 
 INSERT GIF OF GAMEPLAY
 
