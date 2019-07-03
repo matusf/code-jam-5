@@ -18,5 +18,3 @@ MILK_COW_SPRITE_PATH: str = "folder/image.png"      # dummy value
 
 # Burp Cow Settings
 BURP_COW_SPRITE_PATH: str = "folder/image.png"      # dummy value
-
-
