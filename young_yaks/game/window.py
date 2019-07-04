@@ -1,5 +1,7 @@
 import arcade
 
+import background
+
 
 class GameWindow(arcade.Window):
     """
@@ -10,12 +12,14 @@ class GameWindow(arcade.Window):
         """ Main window's initializer"""
         super().__init__(width, height, title, fullscreen, resizable)
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        # All variables are later defined in setup.
+        # This is so we can restart the game.
+        self.background: background.Background
 
     def setup(self):
         """ Set up the game and initialize the variables.
         NOTE: This is ran here so we could restart the game."""
-        pass
+        self.background = background.StartBackground()  # We always start in the start menu
 
     # Events
 
@@ -24,6 +28,7 @@ class GameWindow(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
+        self.background.draw()
 
     def update(self, delta_time):
         """

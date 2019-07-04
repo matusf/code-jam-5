@@ -13,3 +13,9 @@ class Background:
             arcade.draw_texture_rectangle(320/2, 180/2, 320, 180, self.texture)
         else:
             arcade.draw_rectangle_filled(320/2, 180/2, 320, 180, arcade.color.AMAZON)
+
+
+class StartBackground(Background):
+    """ The background you start with, this inherits from Background."""
+    def __init__(self):
+        super().__init__(colour=arcade.color.AMAZON)
