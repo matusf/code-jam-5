@@ -1,14 +1,14 @@
 from typing import List, Dict
-from dataclasses import dataclass, field
 
 
-@dataclass(unsafe_hash=True)
 class Environment():
-    name: str
-    level: float = field(hash=False)
-    unit: str
-    min: float = field(repr=False)
-    max: float = field(repr=False)
+    def __init__(self, name: str, level: float, unit: str, min_value: float, max_value: float):
+        """ Stores info on the earths environments, like it's air."""
+        self.name = name
+        self.level = level
+        self.unit = unit
+        self.min_value = min_value
+        self.max_value = max_value
 
     @property
     def level_perc(self) -> float:
@@ -16,23 +16,26 @@ class Environment():
         return (self.level - self.min) / (self.max - self.min)
 
 
-@dataclass(unsafe_hash=True)
 class CowBreed():
-    name: str
-    damage_rates: Dict[Environment, int] = field(repr=False, hash=False)
-    value: float
-    cost: float
-    total_cows: int = field(default=0, hash=False)
+    def __init__(self, name: str, damage_rates: Dict[Environment, int],
+                 value: float, cost: float, total_cows: int = 0):
+        self.name = name
+        self.damage_rates = damage_rates
+        self.value = value
+        self.cost = cost
+        self.total_cows = total_cows
 
 
-@dataclass
 class Game:
-    game_time: float
-    win_threshold: float
-    lose_threshold: float  # must be higher than win_threshold
-    money: float = field(default=0)
-    cows: List[CowBreed]
-    environment: List[Environment] = field(default_factory=Environment.all, repr=False)
+    """ The object which stores all info needed for the game."""
+    def __init__(self, game_time: float, win_threshold: float, lose_threshold: float,
+                 money: float, cows: List[CowBreed], environments: List[Environment]):
+        self.game_time = game_time
+        self.win_threshold = win_threshold
+        self.lose_threshold = lose_threshold
+        self.money = money or 0
+        self.cows = cows
+        self.environments = environments
 
     @classmethod
     def init_game(cls):
