@@ -1,10 +1,9 @@
 from typing import List, Dict
 from dataclasses import dataclass, field
-from .mixins import Queryable
 
 
 @dataclass(unsafe_hash=True)
-class Environment(Queryable):
+class Environment():
     name: str
     level: float = field(hash=False)
     unit: str
@@ -18,7 +17,7 @@ class Environment(Queryable):
 
 
 @dataclass(unsafe_hash=True)
-class CowBreed(Queryable):
+class CowBreed():
     name: str
     damage_rates: Dict[Environment, int] = field(repr=False, hash=False)
     value: float
@@ -32,23 +31,20 @@ class Game:
     win_threshold: float
     lose_threshold: float  # must be higher than win_threshold
     money: float = field(default=0)
-    cows: List[CowBreed] = field(default_factory=CowBreed.all, repr=False)
+    cows: List[CowBreed]
     environment: List[Environment] = field(default_factory=Environment.all, repr=False)
 
     @classmethod
     def init_game(cls):
         """Instantiates all game models and returns a new Game."""
 
-        # All instances of the Queryable classes can be gotten at the Class.all() method or Game instance attributes.
         water_level = Environment(name='Water Level', unit='m', min=20, max=22, level=20.5)
         temperature = Environment(name='Air Temperature', unit='°C', min=10, max=40, level=15)
 
-        CowBreed(name="Meat Cows", damage_rates={water_level: 10, temperature: 15}, value=20, cost=100)
-        CowBreed(name="Milk Cows", damage_rates={water_level: 20, temperature: 5}, value=30, cost=150)
-        CowBreed(name="Burp Cows", damage_rates={water_level: 5, temperature: 50}, value=40, cost=30)
-
-        cls = cls(game_time=120, win_threshold=0.7, lose_threshold=0.9)
-        return cls
+        meat_cows = CowBreed(name="Meat Cows", damage_rates={water_level: 10, temperature: 15}, value=20, cost=100)
+        milk_cows = CowBreed(name="Milk Cows", damage_rates={water_level: 20, temperature: 5}, value=30, cost=150)
+        burp_cows = CowBreed(name="Burp Cows", damage_rates={water_level: 5, temperature: 50}, value=40, cost=30)
+        return cls(game_time=120, win_threshold=0.7, lose_threshold=0.9, money=0, cows=[meat_cows, milk_cows, burp_cows], environment=[water_levelm temperature])
 
     @property
     def income(self):
