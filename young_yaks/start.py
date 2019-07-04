@@ -1,10 +1,12 @@
 import arcade
+from game import constants
 
 from game.window import GameWindow
 
 
 def start_window():
-    game = GameWindow(800, 600, "Our Game!", False, True)
+    game = GameWindow(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT, constants.SCREEN_NAME,
+                      constants.SCREEN_FULLSCREEN, constants.SCREEN_RESIZE)
     game.setup()
 
     # Will keep the program running, until the user closes the window

@@ -1,5 +1,6 @@
 import arcade
 from .textbutton import TextButton
+from .background import Background
 from collections import UserList
 
 
@@ -22,6 +23,7 @@ class GameWindow(arcade.Window):
         super().__init__(width, height, title, fullscreen, resizable)
 
         arcade.set_background_color(arcade.color.AMAZON)
+        self.background = None
         self.draw_list = None
         self.start_draw_list = DrawList([
             TextButton(x=self.width/2, y=self.height/2, width=300, height=300,
@@ -31,6 +33,7 @@ class GameWindow(arcade.Window):
     def setup(self):
         """ Set up the game and initialize the variables.
         NOTE: This is ran here so we could restart the game."""
+        self.background = Background(color=arcade.color.AMAZON)
         self.draw_list = self.start_draw_list
 
     # Events
@@ -40,6 +43,7 @@ class GameWindow(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
+        self.background.draw()
         self.draw_list.draw()
 
     def update(self, delta_time):
