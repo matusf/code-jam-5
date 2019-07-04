@@ -56,21 +56,21 @@ class Game:
     @property
     def income(self):
         """The player's income rate."""
-        return sum(breed.value * breed.total_cows for breed in CowBreed.all())
+        return sum(breed.value * breed.total_cows for breed in self.cows)
 
     @property
     def damages(self) -> Dict[Environment, float]:
         """The rate of damage on each system, when all cows are taken into account."""
         damage = {}
         for system in Environment.all():
-            damage[system.name] = sum(breed.damage_rates[system] for breed in CowBreed.all())
+            damage[system.name] = sum(breed.damage_rates[system] for breed in self.cows)
         return damage
 
     @property
     def earth_damage_perc(self) -> float:
         """The earth's overall damage, between 0 (unharmed) and 1 (harmed).
         Based on contributions from each system."""
-        damage = sum(system.level_perc for system in Environment.all()) / len(Environment.all())
+        damage = sum(system.level_perc for system in self.environments) / len(self.environments)
         assert 0 <= damage <= 1
         return damage
 
