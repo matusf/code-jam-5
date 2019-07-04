@@ -1,6 +1,6 @@
 import arcade
 
-import background
+from . import background
 
 
 class GameWindow(arcade.Window):
