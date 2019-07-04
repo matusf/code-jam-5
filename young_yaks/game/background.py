@@ -18,4 +18,4 @@ class Background:
 class StartBackground(Background):
     """ The background you start with, this inherits from Background."""
     def __init__(self):
-        super().__init__(colour=arcade.color.AMAZON)
+        super().__init__(color=arcade.color.AMAZON)
