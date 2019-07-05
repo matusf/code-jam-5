@@ -45,10 +45,14 @@ class GameWindow(arcade.Window):
         For a full list of keys, see:
         http://arcade.academy/arcade.key.html
         """
-        pass
+        # If we're in the start "menu":
+        if isinstance(self.background, background.StartBackground):
+            self.background = background.GameBackground()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Called when the user presses a mouse button.
         """
-        pass
+        # If we're in the start "menu":
+        if isinstance(self.background, background.StartBackground):
+            self.background = background.GameBackground()
