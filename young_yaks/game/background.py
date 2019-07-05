@@ -6,7 +6,8 @@ from . import constants
 class Background:
     """ A class representing a window background."""
     def __init__(self, texture=None, color=None):
-        self.texture = texture
+        # To avoid error with loading a texture with None as parameter
+        self.texture = None if texture is None else arcade.load_texture(texture)
         # We don't allow both attributes at the same time
         self.color = color if texture is None else None
 
@@ -24,13 +25,7 @@ class Background:
 class StartBackground(Background):
     """ The background you start with, this inherits from Background."""
     def __init__(self):
-        super().__init__(color=arcade.color.PINK)
-
-    def draw(self):
-        super().draw()
-
-        arcade.draw_text("Click To Continue",
-                         constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2, (0, 0, 0))
+        super().__init__(texture="game/assets/start_background_base.png")
 
 
 class GameBackground(Background):
