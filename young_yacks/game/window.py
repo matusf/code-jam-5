@@ -1,7 +1,10 @@
+from collections import UserList
+
 import arcade
+
 from .textbutton import TextButton
 from .background import Background
-from collections import UserList
+from .models import Game
 
 
 class DrawList(UserList):
@@ -35,6 +38,7 @@ class GameWindow(arcade.Window):
         NOTE: This is ran here so we could restart the game."""
         self.background = Background(color=arcade.color.AMAZON)
         self.draw_list = self.start_draw_list
+        self.game = Game.init_game()
 
     # Events
 
@@ -52,7 +56,7 @@ class GameWindow(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        pass
+        self.game.update(delta_time)
 
     def on_key_press(self, key, key_modifiers):
         """

@@ -1,3 +1,4 @@
+from random import random, randint
 from typing import List, Dict
 
 
@@ -64,7 +65,7 @@ class Game:
         """The rate of damage on each system, when all cows are taken into account."""
         damage = {}
         for system in self.environments:
-            damage[system.name] = sum(breed.damage_rates[system] for breed in self.cows)
+            damage[system.name] = sum(breed.damage_rates[system] for breed in self.cows.values())
         return damage
 
     @property
@@ -100,3 +101,14 @@ class Game:
 
         self.cows[breed].total_cows -= number
         self.money += number * self.cows[breed].cost * .4
+
+    def update(self, delta_time):
+        self.game_time -= delta_time
+        # self.breed()
+
+    def breed(self):
+        """There is a 25% chance for every cow breed to breed. Their number will 
+        increase in range from 0 to 1/4 of they current population"""
+        for breed in self.cows:
+            if random() <= .25: 
+                self.cows[breed].total_cows += randint(0, breed.total_cows // 4)
