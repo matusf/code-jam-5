@@ -38,6 +38,7 @@ class Game:
         self.money = money or 0
         self.cows = cows
         self.environments = environments
+        self.breed()
 
     @classmethod
     def init_game(cls):
