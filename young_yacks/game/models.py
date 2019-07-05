@@ -115,7 +115,7 @@ class Game:
         """
         for breed in self.cows:
             if random() <= .25: 
-                self.cows[breed].total_cows += randint(0, breed.total_cows // 4)
+                self.cows[breed].total_cows += randint(0, self.cows[breed].total_cows // 4)
         
         if self.game_time >= 0 and (not self.was_lost):
             threading.Timer(20, self.breed)
