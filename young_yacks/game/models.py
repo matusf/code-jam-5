@@ -1,3 +1,4 @@
+import threading
 from random import random, randint
 from typing import List, Dict
 
@@ -104,11 +105,16 @@ class Game:
 
     def update(self, delta_time):
         self.game_time -= delta_time
-        # self.breed()
 
     def breed(self):
         """There is a 25% chance for every cow breed to breed. Their number will 
-        increase in range from 0 to 1/4 of they current population"""
+        increase in range from 0 to 1/4 of they current population.
+        
+        This function calls itselt every 20 seconds. It stops when game ends.
+        """
         for breed in self.cows:
             if random() <= .25: 
                 self.cows[breed].total_cows += randint(0, breed.total_cows // 4)
+        
+        if self.game_time >= 0 and (not self.was_lost):
+            threading.Timer(20, self.breed)
