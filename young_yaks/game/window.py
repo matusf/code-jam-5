@@ -1,6 +1,7 @@
 import arcade
 
 from . import background
+from .models import Game
 
 
 class GameWindow(arcade.Window):
@@ -20,6 +21,7 @@ class GameWindow(arcade.Window):
         """ Set up the game and initialize the variables.
         NOTE: This is ran here so we could restart the game."""
         self.background = background.StartBackground()  # We always start in the start menu
+        self.game = Game.init_game()
 
     # Events
 
@@ -36,7 +38,7 @@ class GameWindow(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        pass
+        self.game.update(delta_time)
 
     def on_key_press(self, key, key_modifiers):
         """
