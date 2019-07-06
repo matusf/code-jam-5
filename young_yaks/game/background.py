@@ -31,4 +31,4 @@ class StartBackground(Background):
 class GameBackground(Background):
     """ The default background which is used while playing."""
     def __init__(self):
-        super().__init__(color=arcade.color.AMAZON)
+        super().__init__(color=arcade.color.AMAZON)     # MAKE FILE
