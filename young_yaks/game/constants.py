@@ -11,6 +11,10 @@ SCREEN_ALIASING: bool = False
 # Start Menu Settings
 START_MENU_COWS: int = 8
 
+# Cow Settings
+COW_IMAGE_WIDTH: int = 8
+COW_IMAGE_HEIGHT: int = 8
+
 # Meat Cow Settings
 MEAT_COW_IMAGE: str = "game/assets/cow.png"
 

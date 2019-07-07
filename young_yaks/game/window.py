@@ -1,4 +1,5 @@
 import arcade
+import random
 
 from . import models
 from . import cow
@@ -24,7 +25,11 @@ class GameWindow(arcade.Window):
         self.cow_list = models.CowSpriteList()
 
         for i in range(constants.START_MENU_COWS):
-            self.cow_list.append(cow.Cow(cow.CowBreed.meat, 1, 1))
+            self.cow_list.append(cow.Cow(cow.CowBreed.meat,
+                                 random.randint(constants.COW_IMAGE_WIDTH/2,
+                                                constants.SCREEN_WIDTH),
+                                 random.randint(constants.COW_IMAGE_HEIGHT/2,
+                                                constants.SCREEN_HEIGHT)))
 
     # Events
 
@@ -41,15 +46,22 @@ class GameWindow(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        pass
+        self.cow_list.update()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Called when the user presses a mouse button.
         """
+        self.cow_list.on_pressed(x, y)
 
     def on_mouse_release(self, x, y, button, key_modifiers):
         """
         Called when a user releases a mouse button.
         """
-        pass
+        self.cow_list.on_release(x, y)
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        """
+        Called when a user moves the mouse while pressing a button.
+        """
+        self.cow_list.on_mouse_drag(x, y)
