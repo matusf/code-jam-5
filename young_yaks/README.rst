@@ -1,17 +1,18 @@
-OUR GAME
-========
+Young Yaks' project
+===================
 
 | You're a cow farmer just relaxing and reading the newspaper when you see an interesting article.
 | "NASA thinks aliens will invade earth!", you put down your newspaper.
 | What about your cows?!? You get an ingenious idea! Who would wanna come to a dead planet?
 | And so, your journey begins. Your journey as a cow farmer killing earth.
 
-INSERT GIF OF GAMEPLAY
+**Was our game idea***But we didn't finish nor even get close. We scaled our game down, but even that we weren't able to finish nor get close*
+*At most you could've seen some moving boxes from a last minute project that wasn't finished*
 
 Starting Out
 ------------
 
-**OUR GAME needs python 3.7 or higher**
+**Young Yaks's project needs python 3.7 or higher**
 
 1. Install dependencies:
 

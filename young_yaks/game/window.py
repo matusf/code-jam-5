@@ -1,9 +1,6 @@
-from functools import partialmethod
 import arcade
 
-from . import background
-from .models import Game
-from .button import ActionButton
+from . import constants
 
 
 def check_mouse_press_for_buttons(x, y, button_list):
@@ -18,6 +15,7 @@ def check_mouse_press_for_buttons(x, y, button_list):
         if y < button.center_y - button.height / 2:
             continue
         button.on_press()
+
 
 def check_mouse_release_for_buttons(x, y, button_list):
     """ If a mouse button has been released, see if we need to process
@@ -38,12 +36,12 @@ class GameWindow(arcade.Window):
 
         # All variables are later defined in setup.
         # This is so we can restart the game.
-        self.background: background.Background
+        pass
 
     def setup(self):
         """ Set up the game and initialize the variables.
         NOTE: This is ran here so we could restart the game."""
-        self.background = background.StartBackground()  # We always start in the start menu
+        pass
 
     # Events
 
@@ -52,6 +50,9 @@ class GameWindow(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
+        texture = arcade.load_texture("game/assets/nothing_to_show.png")
+        arcade.draw_texture_rectangle(constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2, 1280, 720,
+                                      texture)
 
     def update(self, delta_time):
         """

@@ -44,8 +44,10 @@ class Game:
     def init_game(cls):
         """Instantiates all game models and returns a new Game."""
 
-        water_level = Environment(name='Water Level', unit='m', min_value=20, max_value=22, level=20.5)
-        temperature = Environment(name='Air Temperature', unit='°C', min_value=10, max_value=40, level=15)
+        water_level = Environment(name='Water Level', unit='m', min_value=20, max_value=22,
+                                  level=20.5)
+        temperature = Environment(name='Air Temperature', unit='°C', min_value=10, max_value=40,
+                                  level=15)
 
         meat_cows = CowBreed(name="Meat Cows", damage_rates={water_level: 10, temperature: 15},
                              value=20, cost=100)
@@ -55,7 +57,8 @@ class Game:
                              value=40, cost=30)
 
         cows = {cow.name: cow for cow in (meat_cows, milk_cows, burp_cows)}
-        return cls(game_time=120, win_threshold=0.7, lose_threshold=0.9, money=0, cows=cows, environments=[water_level, temperature])
+        return cls(game_time=120, win_threshold=0.7, lose_threshold=0.9, money=0, cows=cows,
+                   environments=[water_level, temperature])
 
     @property
     def income(self):
@@ -108,14 +111,14 @@ class Game:
         self.game_time -= delta_time
 
     def breed(self):
-        """There is a 25% chance for every cow breed to breed. Their number will 
+        """There is a 25% chance for every cow breed to breed. Their number will
         increase in range from 0 to 1/4 of they current population.
-        
+
         This function calls itselt every 20 seconds. It stops when game ends.
         """
         for breed in self.cows:
-            if random() <= .25: 
+            if random() <= .25:
                 self.cows[breed].total_cows += randint(0, self.cows[breed].total_cows // 4)
-        
+
         if self.game_time >= 0 and (not self.was_lost):
             threading.Timer(20, self.breed)
