@@ -5,7 +5,8 @@ Young Yaks' project
 | "NASA thinks aliens will invade earth!", you put down your newspaper.
 | What about your cows?!? You get an ingenious idea! Who would wanna come to a dead planet?
 | And so, your journey begins. Your journey as a cow farmer killing earth.
-
+|
+|
 *Was our game idea. But we didn't finish nor even get close. We scaled our game down, but even that we weren't able to finish nor get close*
 *At most you could've seen some moving boxes from a last minute project that wasn't finished*
 
