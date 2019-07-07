@@ -51,8 +51,8 @@ class GameWindow(arcade.Window):
         """
         arcade.start_render()
         texture = arcade.load_texture("game/assets/nothing_to_show.png")
-        arcade.draw_texture_rectangle(constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2, 1280, 720,
-                                      texture)
+        arcade.draw_texture_rectangle(constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2, 1280,
+                                      720, texture)
 
     def update(self, delta_time):
         """
