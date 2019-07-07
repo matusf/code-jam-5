@@ -31,20 +31,10 @@ class GameWindow(arcade.Window):
         """
         pass
 
-    def on_key_press(self, key, key_modifiers):
-        """
-        Called whenever a key on the keyboard is pressed.
-
-        For a full list of keys, see:
-        http://arcade.academy/arcade.key.html
-        """
-        pass
-
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Called when the user presses a mouse button.
         """
-        # If we're in the start "menu":
         pass
 
     def on_mouse_release(self, x, y, button, key_modifiers):
